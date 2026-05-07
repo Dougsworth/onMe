@@ -4,7 +4,8 @@ export type Category =
   | "necklace"
   | "earring"
   | "bracelet"
-  | "outfit";
+  | "outfit"
+  | "hair";
 
 export type BodyPart = "wrist" | "neck" | "finger" | "ear" | "body";
 
@@ -22,10 +23,22 @@ export interface Post {
   id: string;
   user_id: string;
   category: Category;
+  // Sent to YouCam as `ref_file_url` for visual categories. For "hair" the
+  // try-on uses palette_hex instead and source_image_url is just a thumbnail.
   source_image_url: string;
+  // What the grid + detail hero shows. Defaults to source_image_url; override
+  // to give the catalog visual variety without breaking try-on.
+  display_image_url?: string;
+  // Hex color used for hair-color try-on (only set when category === "hair").
+  palette_hex?: string;
   product_name: string;
+  brand: string;
   product_url: string | null;
   caption: string | null;
+  // Tile width/height ratio in the masonry grid.
+  aspect_ratio: number;
+  // Whole USD. Hair posts are previews — no price.
+  price_usd?: number;
   created_at: string;
 }
 
@@ -48,6 +61,7 @@ export interface VoteRecord {
   created_at: string;
 }
 
+// Hair recolors operate on the face/ear shot — same selfie, different output.
 export const CATEGORY_TO_BODY_PART: Record<Category, BodyPart> = {
   watch: "wrist",
   bracelet: "wrist",
@@ -55,4 +69,5 @@ export const CATEGORY_TO_BODY_PART: Record<Category, BodyPart> = {
   necklace: "neck",
   earring: "ear",
   outfit: "body",
+  hair: "ear",
 };

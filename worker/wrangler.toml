@@ -1,0 +1,6 @@
+name = "onme-tryon"
+main = "index.ts"
+compatibility_date = "2026-04-01"
+
+# YouCam bearer token (set out-of-band):
+#   wrangler secret put PERFECTCORP_API_KEY
